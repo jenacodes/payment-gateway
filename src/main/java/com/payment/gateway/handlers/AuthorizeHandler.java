@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 //This class handles the /authorize endpoint, it accepts a POST request with a JSON body containing orderId, customerId, amount and currency.
-// It generates a payment reference and inserts a new record into the payments table with state PENDING.
+//  It generates a payment reference and inserts a new record into the payments table with state PENDING.
 // After successful insertion, it updates the state to AUTHORIZED and returns the payment record as JSON in the response.
 
 public class AuthorizeHandler implements HttpHandler {

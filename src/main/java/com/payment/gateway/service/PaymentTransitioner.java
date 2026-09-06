@@ -14,6 +14,8 @@ import java.util.UUID;
 // It attempts to update the state of a payment record based on the provided current and target states.
 // If the transition is successful, it returns the updated payment record.
 // If the transition fails due to a state mismatch or if the payment record is not found, it provides appropriate feedback.
+// it uses SQL queries to perform the update and diagnostic checks, ensuring that the state transition is atomic and consistent.
+
 public class PaymentTransitioner {
     public static TransitionResult attemptTransition(Connection dbConnection, UUID paymentReference, PaymentState currentState, PaymentState targetState) throws SQLException {
 
