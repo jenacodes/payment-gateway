@@ -1,4 +1,4 @@
-package com.payment.gateway.service;
+package com.payment.gateway.services.PaymentTransition;
 
 import com.payment.gateway.models.PaymentRecord;
 

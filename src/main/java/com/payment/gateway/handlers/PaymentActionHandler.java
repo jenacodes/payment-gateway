@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payment.gateway.config.AppConfig;
 import com.payment.gateway.db.DatabaseConnection;
 import com.payment.gateway.models.PaymentState;
-import com.payment.gateway.service.PaymentTransitioner;
-import com.payment.gateway.service.TransitionResult;
+import com.payment.gateway.services.PaymentTransition.PaymentTransitioner;
+import com.payment.gateway.services.PaymentTransition.TransitionResult;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
@@ -84,9 +84,10 @@ public class PaymentActionHandler implements HttpHandler {
         }
 //Open database connection and retrieve the payment record, check the current state and update to the target state if valid
         try (Connection dbConnection = DatabaseConnection.connect(config.host(), config.dbPort(), config.dbUsername(), config.dbPassword(), config.dbName())) {
+
             TransitionResult result = PaymentTransitioner.attemptTransition(dbConnection, uuid, currentState, targetState);
 
-            //Check the result of the transition and return the appropriate response
+            //Return the result as JSON in the response, with appropriate HTTP status codes based on the outcome
             switch (result.outcome()) {
                 case SUCCESS:
                     String successResponse = objectMapper.writeValueAsString(result.paymentRecord());

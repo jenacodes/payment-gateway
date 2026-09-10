@@ -1,4 +1,4 @@
-package com.payment.gateway.service;
+package com.payment.gateway.services.PaymentTransition;
 
 import com.payment.gateway.models.PaymentRecord;
 import com.payment.gateway.models.PaymentState;
@@ -18,7 +18,6 @@ import java.util.UUID;
 
 public class PaymentTransitioner {
     public static TransitionResult attemptTransition(Connection dbConnection, UUID paymentReference, PaymentState currentState, PaymentState targetState) throws SQLException {
-
 
         // Update the payment state in the database if the current state matches the expected state and immediately return the updated record
         String updateQuery = "UPDATE payments SET state = ? WHERE payment_reference =  ? AND state = ? RETURNING *";
@@ -54,7 +53,6 @@ public class PaymentTransitioner {
         try (PreparedStatement statement = dbConnection.prepareStatement(diagnosticQuery)) {
 
             statement.setObject(1, paymentReference);
-
             ResultSet result = statement.executeQuery();
             //if the payment is found, return the actual state, otherwise return NOT_FOUND
             if (result.next()) {
