@@ -23,7 +23,9 @@ public class Main {
 
         AppConfig config = new AppConfig(host, dbPortNo, dbUsername, dbPassword, dbName, severPort);
 
-        try (Connection databaseConnection = DatabaseConnection.connect(config.host(), config.dbPort(), config.dbUsername(), config.dbPassword(), config.dbName())) {
+        DatabaseConnection.initPool(config);
+
+        try (Connection databaseConnection = DatabaseConnection.connect()) {
 
             if (databaseConnection != null && databaseConnection.isClosed()) {
                 System.out.println("Connection is closed.");
@@ -32,8 +34,23 @@ public class Main {
             } else {
                 System.out.println("Connection is active.");
             }
+
+//            BigDecimal amount1 = new BigDecimal("500");
+//            BigDecimal amount2 = new BigDecimal("600");
+//            PaymentRequest request = new PaymentRequest(100, 105, amount1, "USD");
+//            PaymentRequest request2 = new PaymentRequest(100, 105, amount2, "USD");
+//
+//            String idempotencyKey = "unique-key-123";
+//
+//            IdempotencyResults result1 = IdempotencyService.checkAndClaim(databaseConnection, idempotencyKey, request);
+//            IdempotencyResults result2 = IdempotencyService.checkAndClaim(databaseConnection, idempotencyKey, request2);
+//
+//            System.out.println("Result 1: " + result1.getClass().getSimpleName());
+//            System.out.println("Result 2: " + result2.getClass().getSimpleName());
         }
         Server.start(severPort, config);
+
+
     }
 
 

@@ -17,6 +17,7 @@ import java.util.UUID;
 
 //This handles the /capture, /void and /refund endpoints. It splits the paths and retrieves the payment reference and action.
 // It then calls the PaymentTransitioner to perform the action and returns the result as JSON in the response.
+// it constructs/sends responses with appropriate HTTP status codes based on the outcome of the action, including success, not found, and wrong state scenarios.
 
 public class PaymentActionHandler implements HttpHandler {
 
@@ -83,7 +84,7 @@ public class PaymentActionHandler implements HttpHandler {
                 return;
         }
 //Open database connection and retrieve the payment record, check the current state and update to the target state if valid
-        try (Connection dbConnection = DatabaseConnection.connect(config.host(), config.dbPort(), config.dbUsername(), config.dbPassword(), config.dbName())) {
+        try (Connection dbConnection = DatabaseConnection.connect()) {
 
             TransitionResult result = PaymentTransitioner.attemptTransition(dbConnection, uuid, currentState, targetState);
 
